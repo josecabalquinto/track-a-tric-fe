@@ -18,12 +18,6 @@
     <span class="login-auth-line-segment"></span>
   </div>
 
-  @if (hasError) {
-    <div class="mb-8 alert alert-danger py-4">
-      <div class="alert-text fw-semibold">{{ errorMessage }}</div>
-    </div>
-  }
-
   <div class="fv-row mb-8">
     <label class="form-label login-label">Admin Email</label>
     <div class="login-input-shell" [ngClass]="{ 'is-invalid': loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched) }">

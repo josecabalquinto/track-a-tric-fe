@@ -1,0 +1,212 @@
+<div class="driver-form-page">
+  <div class="driver-form-hero">
+    <h1 class="driver-form-title">{{ fullNameLabel }}</h1>
+    <p class="driver-form-subtitle">{{ pageDescription }}</p>
+  </div>
+
+  <div class="card driver-form-card">
+    <div class="card-body">
+      <form [formGroup]="form">
+        @if (saveError) {
+          <div class="alert alert-danger driver-form-alert" role="alert">
+            <div class="fw-semibold">Unable to save driver.</div>
+            <div>{{ saveError }}</div>
+          </div>
+        } @else if (isSubmitted && form.invalid) {
+          <div class="alert alert-danger driver-form-alert" role="alert">
+            Please correct the highlighted fields before submitting the form.
+          </div>
+        }
+
+        <div class="driver-form-section">
+          <div class="driver-form-section-header">
+            <span class="driver-form-section-icon is-driver">
+              <i class="bi bi-person-badge"></i>
+            </span>
+            <div>
+              <h3 class="driver-form-section-title">Driver Information</h3>
+              <p class="driver-form-section-copy">Personal and licensing details of the driver.</p>
+            </div>
+          </div>
+
+          <div class="row driver-form-grid">
+            <div class="col-md-6">
+              <label class="driver-form-label">Full Name</label>
+              <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('full_name') }">
+                <span class="driver-input-icon"><i class="bi bi-person"></i></span>
+                <input class="form-control driver-input" formControlName="full_name" placeholder="Mario Dela Cruz" />
+              </div>
+              <div class="driver-form-errors">
+                @if (hasControlError('full_name')) {
+                  <span>{{ getControlError('full_name', 'Full name') }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="driver-form-label">License Number</label>
+              <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('license_number') }">
+                <span class="driver-input-icon"><i class="bi bi-postcard"></i></span>
+                <input class="form-control driver-input" formControlName="license_number" placeholder="N01-23-123456" />
+              </div>
+              <div class="driver-form-errors">
+                @if (hasControlError('license_number')) {
+                  <span>{{ getControlError('license_number', 'License number') }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="driver-form-section">
+          <div class="driver-form-section-header">
+            <span class="driver-form-section-icon is-unit">
+              <i class="bi bi-file-earmark-lock"></i>
+            </span>
+            <div>
+              <h3 class="driver-form-section-title">Unit Details</h3>
+              <p class="driver-form-section-copy">Information about the assigned unit.</p>
+            </div>
+          </div>
+
+          <div class="row driver-form-grid">
+            @if (!isEdit) {
+              <div class="col-md-6">
+                <label class="driver-form-label">Unit Code</label>
+                <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('unit_code') }">
+                  <span class="driver-input-icon"><i class="bi bi-truck"></i></span>
+                  <input class="form-control driver-input" formControlName="unit_code" placeholder="TRK-UNIT-001" />
+                </div>
+                <div class="driver-form-errors">
+                  @if (hasControlError('unit_code')) {
+                    <span>{{ getControlError('unit_code', 'Unit code') }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            <div class="col-md-6">
+              <label class="driver-form-label">Plate Number</label>
+              <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('plate_number') }">
+                <span class="driver-input-icon"><i class="bi bi-postcard-heart"></i></span>
+                <input class="form-control driver-input" formControlName="plate_number" placeholder="ABC-1234" />
+              </div>
+              <div class="driver-form-errors">
+                @if (hasControlError('plate_number')) {
+                  <span>{{ getControlError('plate_number', 'Plate number') }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="driver-form-label">Tricycle Color</label>
+              <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('tricycle_color') }">
+                <span class="driver-input-icon"><i class="bi bi-droplet"></i></span>
+                <input class="form-control driver-input" formControlName="tricycle_color" placeholder="Blue" />
+              </div>
+              <div class="driver-form-errors">
+                @if (hasControlError('tricycle_color')) {
+                  <span>{{ getControlError('tricycle_color', 'Tricycle color') }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="driver-form-label">Body Number</label>
+              <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('body_number') }">
+                <span class="driver-input-icon"><i class="bi bi-box-seam"></i></span>
+                <input class="form-control driver-input" formControlName="body_number" placeholder="BD-101" />
+              </div>
+              <div class="driver-form-errors">
+                @if (hasControlError('body_number')) {
+                  <span>{{ getControlError('body_number', 'Body number') }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="driver-form-label">Status</label>
+              <div class="driver-input-shell" [ngClass]="{ 'is-invalid': hasControlError('status') }">
+                <span class="driver-input-icon"><i class="bi bi-clock-history"></i></span>
+                <select class="form-select driver-select" formControlName="status">
+                  @for (status of statusOptions; track status) {
+                    <option [value]="status">{{ status | titlecase }}</option>
+                  }
+                </select>
+              </div>
+              <div class="driver-form-errors">
+                @if (hasControlError('status')) {
+                  <span>{{ getControlError('status', 'Status') }}</span>
+                }
+              </div>
+            </div>
+
+            @if (!isEdit) {
+              <div class="col-md-6">
+                <label class="driver-form-label">Unit Status</label>
+                <div class="driver-input-shell">
+                  <span class="driver-input-icon"><i class="bi bi-shield-check"></i></span>
+                  <select class="form-select driver-select" formControlName="unit_status">
+                    @for (status of unitStatusOptions; track status) {
+                      <option [value]="status">{{ status | titlecase }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="driver-form-errors"></div>
+              </div>
+            }
+
+            @if (driver) {
+              <div class="col-md-6">
+                <label class="driver-form-label">Driver ID</label>
+                <div class="driver-input-shell">
+                  <span class="driver-input-icon"><i class="bi bi-hash"></i></span>
+                  <input class="form-control driver-input" [value]="driver.id" readonly />
+                </div>
+                <div class="driver-form-errors"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="driver-form-label">Registered By</label>
+                <div class="driver-input-shell">
+                  <span class="driver-input-icon"><i class="bi bi-person-vcard"></i></span>
+                  <input class="form-control driver-input" [value]="driver.registered_by || 'System'" readonly />
+                </div>
+                <div class="driver-form-errors"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="driver-form-label">Registered At</label>
+                <div class="driver-input-shell">
+                  <span class="driver-input-icon"><i class="bi bi-calendar-event"></i></span>
+                  <input class="form-control driver-input" [value]="(driver.registered_at | date:'medium') || 'Unavailable'" readonly />
+                </div>
+                <div class="driver-form-errors"></div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="driver-form-label">Updated At</label>
+                <div class="driver-input-shell">
+                  <span class="driver-input-icon"><i class="bi bi-calendar-check"></i></span>
+                  <input class="form-control driver-input" [value]="(driver.updated_at | date:'medium') || 'Unavailable'" readonly />
+                </div>
+                <div class="driver-form-errors"></div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="driver-form-footer">
+          <button class="btn btn-primary driver-submit-btn" type="button" [disabled]="isSaving" (click)="submit()">
+            <i class="bi bi-check-circle me-2"></i>
+            {{ submitLabel }}
+          </button>
+          <a class="btn btn-light driver-cancel-btn" routerLink="/drivers">
+            <i class="bi bi-x-lg me-2"></i>
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

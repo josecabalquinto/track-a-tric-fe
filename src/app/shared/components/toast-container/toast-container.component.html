@@ -1,0 +1,33 @@
+<div
+  class="toast-host"
+  [class.toast-top-right]="toastr.options.positionClass === 'toast-top-right'"
+  aria-live="polite"
+  aria-atomic="true"
+>
+  @if (toasts$ | async; as toasts) {
+    @for (toast of toasts; track toast.id) {
+      <div
+        class="toastr toast-card"
+        [class.toastr-success]="toast.type === 'success'"
+        [class.toastr-info]="toast.type === 'info'"
+        [class.toastr-warning]="toast.type === 'warning'"
+        [class.toastr-error]="toast.type === 'error'"
+        [class.is-leaving]="toast.closing"
+        [style.--toast-show-duration.ms]="toMilliseconds(toast.options.showDuration, 300)"
+        [style.--toast-hide-duration.ms]="toMilliseconds(toast.options.hideDuration, 1000)"
+        [style.--toast-timeout.ms]="toMilliseconds(toast.options.timeOut, 5000)"
+        (click)="handleClick(toast)"
+      >
+        @if (toast.title) {
+          <div class="toastr-title">{{ toast.title }}</div>
+        }
+        <div class="toastr-message">{{ toast.message }}</div>
+        @if (toast.options.progressBar) {
+          <div class="toast-progress">
+            <span class="toast-progress-bar"></span>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

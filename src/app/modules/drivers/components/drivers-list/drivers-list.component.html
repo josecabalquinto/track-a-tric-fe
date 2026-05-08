@@ -1,14 +1,20 @@
-<div class="card mb-8">
-  <div class="card-header border-0 pt-6">
+<div class="mb-6 d-flex align-items-center justify-content-between">
     <h3 class="card-title">Driver Management</h3>
-  </div>
-  <div class="card-body">
-    <form class="row g-5" [formGroup]="form">
-      <div class="col-md-4">
-        <label class="form-label">Search</label>
-        <input class="form-control" formControlName="search" placeholder="Name, email, phone" />
+    @if (isSuperadmin) {
+      <div class="card-toolbar">
+        <a class="btn btn-primary" routerLink="/drivers/new">Register Driver</a>
       </div>
-      <div class="col-md-4">
+    }
+  </div>
+<div class="card mb-8">
+
+  <div class="card-body">
+    <form class="drivers-filter-row" [formGroup]="form">
+      <div>
+        <label class="form-label">Search</label>
+        <input class="form-control" formControlName="search" placeholder="Full name, plate, or license number" />
+      </div>
+      <div>
         <label class="form-label">Status</label>
         <select class="form-select" formControlName="status">
           <option value="">All statuses</option>
@@ -17,12 +23,13 @@
           <option value="suspended">Suspended</option>
         </select>
       </div>
-      <div class="col-md-4">
+      <div>
         <label class="form-label">Plate</label>
         <input class="form-control" formControlName="plate" placeholder="Assigned plate number" />
       </div>
-      <div class="col-12">
-        <button type="button" class="btn btn-primary" (click)="loadDrivers(1)">Apply Filters</button>
+      <div class="drivers-filter-actions">
+        <button type="button" class="btn btn-primary" (click)="applyFilters()">Apply Filters</button>
+        <button type="button" class="btn btn-light" (click)="resetFilters()">Reset</button>
       </div>
     </form>
   </div>
@@ -33,7 +40,7 @@
 } @else if (errorMessage) {
   <div class="alert alert-danger">{{ errorMessage }}</div>
 } @else if (!drivers.length) {
-  <app-empty-state title="No drivers found" description="Try a different search or register new drivers from Citywall."></app-empty-state>
+  <app-empty-state title="No drivers found" description="Try a different search or register new drivers from this module."></app-empty-state>
 } @else {
   <div class="card">
     <div class="card-body pt-0">
@@ -51,12 +58,12 @@
           <tbody class="text-gray-700 fw-semibold">
             @for (driver of drivers; track driver.id) {
               <tr>
-                <td>{{ driver.name }}</td>
+                <td>{{ driver.full_name || driver.name }}</td>
                 <td><span class="badge badge-light-info text-uppercase">{{ driver.status }}</span></td>
                 <td>{{ driver.plate_number || 'No unit yet' }}</td>
-                <td>{{ driver.phone || driver.email || 'Unavailable' }}</td>
+                <td>{{ driver.license_number || driver.body_number || 'Unavailable' }}</td>
                 <td class="text-end">
-                  <a class="btn btn-sm btn-light-primary" [routerLink]="['/drivers', driver.id]">Details</a>
+                  <a class="btn btn-sm btn-primary" [routerLink]="['/drivers', driver.id]">View Details</a>
                 </td>
               </tr>
             }

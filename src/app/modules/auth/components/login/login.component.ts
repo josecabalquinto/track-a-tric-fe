@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { UserModel } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 
 @Component({
   selector: 'app-login',
@@ -19,8 +20,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     rememberMe: true,
   };
   loginForm: FormGroup;
-  hasError: boolean;
-  errorMessage = '';
   returnUrl: string;
   isLoading$: Observable<boolean>;
   showPassword = false;
@@ -30,7 +29,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
@@ -72,8 +72,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.hasError = false;
-    this.errorMessage = '';
     this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) {
       return;
@@ -87,8 +85,10 @@ export class LoginComponent implements OnInit, OnDestroy {
           const target = user.role === 'superadmin' ? this.returnUrl : this.returnUrl;
           this.router.navigateByUrl(target);
         } else {
-          this.hasError = true;
-          this.errorMessage = 'The login details are incorrect or the server did not return a valid session.';
+          this.toastr.error(
+            'The login details are incorrect or the server did not return a valid session.',
+            'Sign In Failed'
+          );
         }
       });
     this.unsubscribe.push(loginSubscr);

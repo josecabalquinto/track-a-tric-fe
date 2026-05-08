@@ -3,8 +3,8 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { SharedUiModule } from 'src/app/shared/shared-ui.module';
 import { DashboardService } from './dashboard.service';
+import { DriversService } from '../drivers/services/drivers.service';
 import { TripsService } from '../trips/trips.service';
-import { DriversService } from '../drivers/drivers.service';
 
 @NgModule({
   declarations: [DashboardComponent],

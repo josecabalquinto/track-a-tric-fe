@@ -1,0 +1,238 @@
+.driver-detail-shell {
+  border: 1px solid var(--bs-gray-200);
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.05);
+}
+
+.driver-detail-shell .card-body {
+  padding: 1rem 1rem 1.25rem;
+}
+
+.driver-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.5rem 0.25rem 1.5rem;
+}
+
+.driver-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.driver-detail-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: #3e97ff;
+  background: linear-gradient(145deg, #eef4ff, #dfeaff);
+  flex-shrink: 0;
+}
+
+.driver-detail-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+
+.driver-detail-name {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--bs-gray-900);
+}
+
+.driver-detail-id {
+  color: var(--bs-gray-600);
+  font-size: 1rem;
+}
+
+.driver-detail-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.driver-action-btn {
+  min-width: 10rem;
+  border-radius: 0.7rem;
+  font-weight: 600;
+}
+
+.driver-overflow-btn {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.driver-detail-tabs {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0.25rem 0;
+  border-top: 1px solid var(--bs-gray-200);
+  border-bottom: 1px solid var(--bs-gray-200);
+}
+
+.driver-detail-tab {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 0.95rem 0.35rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--bs-gray-600);
+  font-weight: 600;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.driver-detail-tab:hover {
+  color: #3e97ff;
+}
+
+.driver-detail-tab.is-active {
+  color: #3e97ff;
+  border-bottom-color: #3e97ff;
+}
+
+.driver-detail-panel {
+  margin-top: 1.5rem;
+  border: 1px solid var(--bs-gray-200);
+  border-radius: 1rem;
+  background: var(--bs-white);
+}
+
+.driver-detail-panel .card-body {
+  padding: 1.4rem 1.4rem 1.25rem;
+}
+
+.driver-detail-panel-title {
+  margin: 0 0 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--bs-gray-900);
+}
+
+.driver-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.driver-profile-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 0.25rem;
+  border-top: 1px solid var(--bs-gray-200);
+}
+
+.driver-profile-item:nth-child(-n + 2) {
+  border-top: 0;
+}
+
+.driver-profile-icon {
+  width: 1.25rem;
+  color: var(--bs-gray-500);
+  font-size: 1rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.driver-profile-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--bs-gray-600);
+}
+
+.driver-profile-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--bs-gray-900);
+}
+
+.driver-profile-note {
+  margin-top: 1.5rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(90deg, #eef5ff, #f5f8ff);
+  color: #3e97ff;
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.driver-empty-wrap,
+.driver-history-wrap {
+  padding-top: 0.5rem;
+}
+
+.driver-unit-card {
+  border: 1px solid var(--bs-gray-200);
+  border-radius: 0.95rem;
+  padding: 1rem 1.1rem;
+}
+
+.driver-unit-title {
+  font-weight: 700;
+  color: var(--bs-gray-900);
+}
+
+.driver-unit-meta {
+  color: var(--bs-gray-600);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 991.98px) {
+  .driver-detail-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .driver-detail-actions {
+    justify-content: flex-start;
+  }
+
+  .driver-detail-name {
+    font-size: 1.6rem;
+  }
+
+  .driver-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .driver-profile-item:nth-child(2) {
+    border-top: 1px solid var(--bs-gray-200);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .driver-detail-tabs {
+    gap: 0.4rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .driver-action-btn,
+  .driver-overflow-btn {
+    width: 100%;
+  }
+}

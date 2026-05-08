@@ -11,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TranslationModule } from '../../modules/i18n';
 import { LayoutComponent } from './layout.component';
 import { ExtrasModule } from '../partials/layout/extras/extras.module';
-import { Routing } from '../../pages/routing';
+import { Routing } from '../../modules/routing';
 import { HeaderComponent } from './components/header/header.component';
 import { ContentComponent } from './components/content/content.component';
 import { FooterComponent } from './components/footer/footer.component';

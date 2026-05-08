@@ -1,14 +1,29 @@
-@if (meta && meta.total > meta.per_page) {
-  <div class="d-flex justify-content-between align-items-center flex-wrap gap-4 mt-6">
+@if (hasPagination) {
+  <div class="pagination-shell d-flex justify-content-between align-items-center flex-wrap gap-4 mt-6">
     <div class="text-gray-600 fs-7">
-      Page {{ meta.current_page }} of {{ totalPages }}
+      Showing {{ showingFrom }}-{{ showingTo }} of {{ collectionSize }} records
+      <span class="mx-2">|</span>
+      Page {{ currentPage }} of {{ totalPages }}
     </div>
-    <ngb-pagination
-      [collectionSize]="collectionSize"
-      [page]="meta.current_page"
-      [pageSize]="meta.per_page"
-      [boundaryLinks]="true"
-      (pageChange)="pageChange.emit($event)"
-    ></ngb-pagination>
+    <div class="d-flex align-items-center flex-wrap gap-3">
+      <button type="button" class="btn btn-sm btn-light-primary" [disabled]="!canGoPrevious" (click)="goToPrevious()">
+        Previous
+      </button>
+      @if (totalPages > 1) {
+        <ngb-pagination
+          [collectionSize]="collectionSize"
+          [page]="currentPage"
+          [pageSize]="pageSize"
+          [boundaryLinks]="true"
+          [maxSize]="5"
+          [ellipses]="true"
+          [rotate]="true"
+          (pageChange)="pageChange.emit($event)"
+        ></ngb-pagination>
+      }
+      <button type="button" class="btn btn-sm btn-light-primary" [disabled]="!canGoNext" (click)="goToNext()">
+        Next
+      </button>
+    </div>
   </div>
 }

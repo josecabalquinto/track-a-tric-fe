@@ -1,0 +1,42 @@
+.drivers-filter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(200px, 1fr) minmax(0, 1.6fr) auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.drivers-filter-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+
+.drivers-filter-actions .btn {
+  min-width: 7.5rem;
+}
+
+@media (max-width: 1199.98px) {
+  .drivers-filter-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .drivers-filter-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .drivers-filter-row {
+    grid-template-columns: 1fr;
+  }
+
+  .drivers-filter-actions {
+    flex-wrap: wrap;
+  }
+
+  .drivers-filter-actions .btn {
+    width: 100%;
+  }
+}

@@ -13,6 +13,7 @@ import {
 } from '../../../kt/components';
 import { PageInfoService } from '../../core/page-info.service';
 import { Title } from '@angular/platform-browser';
+import { SplashScreenService } from '../../../partials';
 
 @Component({
   selector: 'app-scripts-init',
@@ -26,6 +27,7 @@ export class ScriptsInitComponent implements OnInit, OnDestroy {
     private pageInfo: PageInfoService,
     private router: Router,
     private titleService: Title,
+    private splashScreenService: SplashScreenService,
   ) {
     const initPageInfo = () => {
       setTimeout(() => {
@@ -47,6 +49,7 @@ export class ScriptsInitComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pluginsInitialization();
+    this.hideSplashScreen();
     const layoutUpdateSubscription = this.layout.layoutConfigSubject
       .asObservable()
       .subscribe(() => {
@@ -63,6 +66,7 @@ export class ScriptsInitComponent implements OnInit, OnDestroy {
       StickyComponent.bootstrap();
       MenuComponent.bootstrap();
       ScrollComponent.bootstrap();
+      this.hideSplashScreen();
     }, 200);
   }
 
@@ -74,7 +78,24 @@ export class ScriptsInitComponent implements OnInit, OnDestroy {
       StickyComponent.bootstrap();
       MenuComponent.reinitialization();
       ScrollComponent.reinitialization();
+      this.hideSplashScreen();
     }, 100);
+  }
+
+  private hideSplashScreen(): void {
+    this.splashScreenService.hide();
+
+    const splashScreen = document.getElementById('splash-screen');
+    if (!splashScreen) {
+      return;
+    }
+
+    splashScreen.classList.add('hidden');
+    splashScreen.setAttribute('aria-hidden', 'true');
+
+    setTimeout(() => {
+      splashScreen.remove();
+    }, 900);
   }
 
   ngOnDestroy() {

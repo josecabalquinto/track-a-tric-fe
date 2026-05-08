@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { TripFlag } from 'src/app/core/models/flag.models';
+import { ToastrService } from 'src/app/core/services/toastr.service';
 import { TripDetail, TripPing } from 'src/app/core/models/trip.models';
 import { FlagFormModalComponent } from '../flags/flag-form-modal/flag-form-modal.component';
 import { TripsService } from './trips.service';
@@ -23,7 +24,8 @@ export class TripDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private tripsService: TripsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +57,11 @@ export class TripDetailComponent implements OnInit {
               ...this.trip!,
               flags: [flag, ...(this.trip?.flags ?? [])],
             };
+            this.toastr.success('Incident flag added to the trip.', 'Flag Created');
             modalRef.close();
+          },
+          error: (error: Error) => {
+            this.toastr.error(error.message, 'Unable to Create Flag');
           },
         });
     });
@@ -82,7 +88,11 @@ export class TripDetailComponent implements OnInit {
                 flags: (this.trip.flags ?? []).map((item) => (item.id === updatedFlag.id ? updatedFlag : item)),
               };
             }
+            this.toastr.success('Incident flag updated.', 'Flag Updated');
             modalRef.close();
+          },
+          error: (error: Error) => {
+            this.toastr.error(error.message, 'Unable to Update Flag');
           },
         });
     });

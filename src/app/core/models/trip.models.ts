@@ -13,8 +13,9 @@ export interface TripListFilters {
 }
 
 export interface TripDriverSummary {
-  id: number;
-  name: string;
+  id: string | number;
+  full_name?: string | null;
+  name?: string | null;
   plate_number?: string | null;
   status?: string | null;
   phone?: string | null;

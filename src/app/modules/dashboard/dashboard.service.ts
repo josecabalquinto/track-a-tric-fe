@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable } from 'rxjs';
 import { TripFlag } from 'src/app/core/models/flag.models';
 import { DashboardVm } from './dashboard.models';
-import { DriversService } from '../drivers/drivers.service';
+import { DriversService } from '../drivers/services/drivers.service';
 import { TripsService } from '../trips/trips.service';
 
 @Injectable()

@@ -1,0 +1,192 @@
+@if (isLoading) {
+  <app-loading-state label="Loading driver profile..."></app-loading-state>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else if (driver) {
+  <div class="card driver-detail-shell">
+    <div class="card-body">
+      <div class="driver-detail-header">
+        <div class="driver-detail-meta">
+          <div class="driver-detail-avatar">{{ initials }}</div>
+          <div>
+            <div class="driver-detail-name-row">
+              <h1 class="driver-detail-name">{{ driver.full_name || driver.name }}</h1>
+              <span class="badge text-uppercase" [ngClass]="statusBadgeClass">{{ driver.status }}</span>
+            </div>
+            <div class="driver-detail-id">Driver ID: {{ driver.id }}</div>
+          </div>
+        </div>
+
+        <div class="driver-detail-actions">
+          <button class="btn btn-success driver-action-btn" type="button" [disabled]="isUpdating" (click)="updateStatus('approved')">
+            <i class="bi bi-check-circle me-2"></i>
+            Approve Driver
+          </button>
+          <button class="btn btn-warning driver-action-btn" type="button" [disabled]="isUpdating" (click)="updateStatus('suspended')">
+            <i class="bi bi-pause-circle me-2"></i>
+            Suspend Driver
+          </button>
+          @if (isSuperadmin) {
+            <button class="btn btn-danger driver-action-btn" type="button" [disabled]="isDeleting" (click)="deleteDriver()">
+              <i class="bi bi-trash me-2"></i>
+              {{ isDeleting ? 'Deleting...' : 'Delete Driver' }}
+            </button>
+          }
+          <button class="btn btn-icon btn-light driver-overflow-btn" type="button" aria-label="More actions">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="driver-detail-tabs">
+        <button class="driver-detail-tab" type="button" [class.is-active]="activeTab === 'info'" (click)="selectTab('info')">
+          <i class="bi bi-person"></i>
+          Driver Information
+        </button>
+        <button class="driver-detail-tab" type="button" [class.is-active]="activeTab === 'units'" (click)="selectTab('units')">
+          <i class="bi bi-truck"></i>
+          Assigned Units
+        </button>
+        <button class="driver-detail-tab" type="button" [class.is-active]="activeTab === 'history'" (click)="selectTab('history')">
+          <i class="bi bi-clock-history"></i>
+          Trip History
+        </button>
+      </div>
+
+      @if (activeTab === 'info') {
+        <div class="card driver-detail-panel">
+          <div class="card-body">
+            <h3 class="driver-detail-panel-title">Driver Profile</h3>
+
+            <div class="driver-profile-grid">
+              <div class="driver-profile-item">
+                <span class="driver-profile-icon"><i class="bi bi-person-vcard"></i></span>
+                <div>
+                  <span class="driver-profile-label">License Number</span>
+                  <div class="driver-profile-value">{{ driver.license_number || 'Unavailable' }}</div>
+                </div>
+              </div>
+
+              <div class="driver-profile-item">
+                <span class="driver-profile-icon"><i class="bi bi-postcard-heart"></i></span>
+                <div>
+                  <span class="driver-profile-label">Plate Number</span>
+                  <div class="driver-profile-value">{{ driver.plate_number || 'Unavailable' }}</div>
+                </div>
+              </div>
+
+              <div class="driver-profile-item">
+                <span class="driver-profile-icon"><i class="bi bi-circle-fill"></i></span>
+                <div>
+                  <span class="driver-profile-label">Tricycle Color</span>
+                  <div class="driver-profile-value">{{ driver.tricycle_color || 'Unavailable' }}</div>
+                </div>
+              </div>
+
+              <div class="driver-profile-item">
+                <span class="driver-profile-icon"><i class="bi bi-box-seam"></i></span>
+                <div>
+                  <span class="driver-profile-label">Body Number</span>
+                  <div class="driver-profile-value">{{ driver.body_number || 'Unavailable' }}</div>
+                </div>
+              </div>
+
+              <div class="driver-profile-item">
+                <span class="driver-profile-icon"><i class="bi bi-calendar-event"></i></span>
+                <div>
+                  <span class="driver-profile-label">Registered At</span>
+                  <div class="driver-profile-value">{{ (driver.registered_at | date:'medium') || 'Unavailable' }}</div>
+                </div>
+              </div>
+
+              <div class="driver-profile-item">
+                <span class="driver-profile-icon"><i class="bi bi-calendar-check"></i></span>
+                <div>
+                  <span class="driver-profile-label">Updated At</span>
+                  <div class="driver-profile-value">{{ (driver.updated_at | date:'medium') || 'Unavailable' }}</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+
+      @if (activeTab === 'units') {
+        <div class="card driver-detail-panel">
+          <div class="card-body">
+            <h3 class="driver-detail-panel-title">Assigned Units</h3>
+
+            @if (!assignedUnits.length) {
+              <div class="driver-empty-wrap">
+                <app-empty-state title="No units assigned" description="Assign units from the backend workflow or citywall registry."></app-empty-state>
+              </div>
+            } @else {
+              <div class="d-flex flex-column gap-4">
+                @for (unit of assignedUnits; track unit.id) {
+
+                    <div class="driver-unit-card">
+                      <div class="d-flex justify-content-between align-items-start p-3">
+                        <div>
+                          <div class="driver-unit-title">{{ unit.plate_number || 'No plate number' }}</div>
+                          <div class="driver-unit-meta">{{ unit.code || unit.unit_code || 'No unit code' }}</div>
+                          <div class="driver-unit-meta">{{ unit.tricycle_color || 'No color' }} | {{ unit.body_number || 'No body number' }}</div>
+                        </div>
+                        <button class="btn btn-primary driver-action-btn" type="button">
+                          <i class="bi bi-clock-history me-2"></i>
+                          Trip History
+                        </button>
+                      </div>
+
+                    </div>
+
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (activeTab === 'history') {
+        <div class="card driver-detail-panel">
+          <div class="card-body">
+            <h3 class="driver-detail-panel-title">Trip History</h3>
+
+            @if (!tripHistory.length) {
+              <div class="driver-empty-wrap">
+                <app-empty-state title="No trip history" description="Completed rides for this driver will appear here."></app-empty-state>
+              </div>
+            } @else {
+              <div class="driver-history-wrap table-responsive">
+                <table class="table align-middle fs-6 gy-4">
+                  <thead>
+                    <tr class="text-muted fw-bold text-uppercase">
+                      <th>Trip</th>
+                      <th>Status</th>
+                      <th>Started</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (trip of tripHistory; track trip.id) {
+                      <tr>
+                        <td>#{{ trip.id }}</td>
+                        <td>{{ trip.status }}</td>
+                        <td>{{ trip.started_at | date:'medium' }}</td>
+                        <td class="text-end">
+                          <a class="btn btn-sm btn-light-primary" [routerLink]="['/trips', trip.id]">Open</a>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <app-empty-state title="Driver record unavailable" description="The selected driver could not be loaded. Try reopening the record from the drivers list."></app-empty-state>
+}

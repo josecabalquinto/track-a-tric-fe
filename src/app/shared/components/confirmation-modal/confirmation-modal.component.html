@@ -1,0 +1,20 @@
+<div class="modal-header border-0 pb-0">
+  <button type="button" class="btn btn-icon btn-sm btn-light ms-auto" aria-label="Close" (click)="cancel()">
+    <i class="bi bi-x-lg"></i>
+  </button>
+</div>
+
+<div class="modal-body pt-0">
+  <div class="confirmation-modal">
+    <div class="confirmation-modal__icon">
+      <i [class]="iconClass"></i>
+    </div>
+    <h3 class="confirmation-modal__title">{{ title }}</h3>
+    <p class="confirmation-modal__message">{{ message }}</p>
+
+    <div class="confirmation-modal__actions">
+      <button type="button" class="btn btn-light" (click)="cancel()">{{ cancelLabel }}</button>
+      <button type="button" class="btn" [ngClass]="confirmButtonClass" (click)="confirm()">{{ confirmLabel }}</button>
+    </div>
+  </div>
+</div>

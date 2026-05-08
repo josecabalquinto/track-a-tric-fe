@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CoreModule } from './core/core.module';
+import { SharedUiModule } from './shared/shared-ui.module';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -28,6 +29,7 @@ function appInitializer(authService: AuthService) {
     HttpClientModule,
     ClipboardModule,
     CoreModule,
+    SharedUiModule,
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,

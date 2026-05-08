@@ -46,7 +46,7 @@
                         <div class="fw-bold">#{{ trip.id }}</div>
                         <div class="text-muted fs-7">{{ trip.unit?.plate_number || 'No unit assigned' }}</div>
                       </td>
-                      <td>{{ trip.driver?.name || 'Unassigned' }}</td>
+                      <td>{{ trip.driver?.full_name || trip.driver?.name || 'Unassigned' }}</td>
                       <td><span class="badge badge-light-primary text-uppercase">{{ trip.status }}</span></td>
                       <td>{{ trip.started_at | date:'medium' }}</td>
                       <td class="text-end">
@@ -106,7 +106,7 @@
         </div>
         <div class="card-body pt-0">
           @if (!vm.recentDrivers.length) {
-            <app-empty-state title="No drivers found" description="Create driver records from the Citywall module."></app-empty-state>
+            <app-empty-state title="No drivers found" description="Create driver records from the Drivers module."></app-empty-state>
           } @else {
             <div class="table-responsive">
               <table class="table align-middle table-row-dashed fs-6 gy-5">
@@ -121,9 +121,9 @@
                 <tbody class="text-gray-700 fw-semibold">
                   @for (driver of vm.recentDrivers; track driver.id) {
                     <tr>
-                      <td>{{ driver.name }}</td>
+                      <td>{{ driver.full_name || driver.name }}</td>
                       <td><span class="badge badge-light-info text-uppercase">{{ driver.status }}</span></td>
-                      <td>{{ driver.phone || driver.email || 'Not provided' }}</td>
+                      <td>{{ driver.license_number || driver.body_number || 'Not provided' }}</td>
                       <td class="text-end">
                         <a class="btn btn-sm btn-light-primary" [routerLink]="['/drivers', driver.id]">View</a>
                       </td>
