@@ -1,0 +1,33 @@
+<div class="card card-flush shadow-none">
+  <div class="card-body p-0" [formGroup]="form">
+    <div class="mb-6">
+      <label class="form-label fw-bold">Category</label>
+      <input class="form-control" formControlName="category" />
+    </div>
+    <div class="mb-6">
+      <label class="form-label fw-bold">Reason</label>
+      <textarea class="form-control" rows="3" formControlName="reason"></textarea>
+    </div>
+    @if (mode === 'update') {
+      <div class="mb-6">
+        <label class="form-label fw-bold">Status</label>
+        <select class="form-select" formControlName="status">
+          <option value="open">Open</option>
+          <option value="resolved">Resolved</option>
+          <option value="dismissed">Dismissed</option>
+        </select>
+      </div>
+    }
+    <div class="mb-6">
+      <label class="form-label fw-bold">Notes</label>
+      <textarea class="form-control" rows="4" formControlName="notes"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" [disabled]="saving" (click)="submit()">
+      @if (saving) {
+        Saving...
+      } @else {
+        {{ mode === 'create' ? 'Create Flag' : 'Update Flag' }}
+      }
+    </button>
+  </div>
+</div>

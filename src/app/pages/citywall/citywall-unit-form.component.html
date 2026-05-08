@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-header border-0 pt-6">
+    <h3 class="card-title">Create Tricycle Unit</h3>
+  </div>
+  <div class="card-body">
+    @if (errorMessage) {
+      <div class="alert alert-danger">{{ errorMessage }}</div>
+    }
+    @if (createdUnit) {
+      <div class="alert alert-success">
+        Unit created for {{ createdUnit.plate_number }}.
+        <a [routerLink]="['/citywall/units', createdUnit.id, 'qr']" class="ms-2">Open QR preview</a>
+      </div>
+    }
+    <form class="row g-5" [formGroup]="form">
+      <div class="col-md-6">
+        <label class="form-label">Unit Code</label>
+        <input class="form-control" formControlName="code" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Plate Number</label>
+        <input class="form-control" formControlName="plate_number" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" rows="4" formControlName="description"></textarea>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary" type="button" [disabled]="isSaving" (click)="submit()">{{ isSaving ? 'Saving...' : 'Create Unit' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

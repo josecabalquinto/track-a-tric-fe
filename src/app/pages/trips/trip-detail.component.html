@@ -1,0 +1,115 @@
+@if (isLoading) {
+  <app-loading-state label="Loading trip detail..."></app-loading-state>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else if (trip) {
+  <div class="d-flex flex-column flex-xl-row gap-8 mb-8">
+    <div class="flex-lg-row-fluid">
+      <div class="card mb-8">
+        <div class="card-header border-0 pt-6">
+          <div>
+            <h3 class="card-title fw-bold text-gray-900">Trip #{{ trip.id }}</h3>
+            <div class="text-muted fs-7">{{ trip.unit?.plate_number || 'No unit assigned' }}</div>
+          </div>
+          <div class="card-toolbar">
+            <button class="btn btn-primary" type="button" (click)="openCreateFlag()">Create Incident Flag</button>
+          </div>
+        </div>
+        <div class="card-body pt-2">
+          <div class="row g-5">
+            <div class="col-md-4">
+              <div class="text-muted fs-7">Driver</div>
+              <div class="fw-bold fs-6">{{ trip.driver?.name || 'Unassigned' }}</div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-muted fs-7">Status</div>
+              <div class="fw-bold fs-6 text-uppercase">{{ trip.status }}</div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-muted fs-7">Trip Window</div>
+              <div class="fw-bold fs-6">{{ trip.started_at | date:'medium' }}</div>
+              <div class="text-gray-600 fs-7">{{ trip.ended_at ? (trip.ended_at | date:'medium') : 'Still active' }}</div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-muted fs-7">Start Location</div>
+              <div class="fw-bold fs-6">{{ trip.start_address || (trip.start_latitude + ', ' + trip.start_longitude) }}</div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-muted fs-7">End Location</div>
+              <div class="fw-bold fs-6">{{ trip.end_address || (trip.end_latitude + ', ' + trip.end_longitude) || 'In progress' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title fw-bold text-gray-900">Investigation Map</h3>
+        </div>
+        <div class="card-body pt-2">
+          @if (mapLoading) {
+            <app-loading-state label="Rendering trip route..."></app-loading-state>
+          } @else if (!pings.length) {
+            <app-empty-state title="No GPS pings available" description="This trip has no route history yet, or the backend has not returned ping data."></app-empty-state>
+          } @else {
+            <app-trip-route-map [pings]="pings"></app-trip-route-map>
+            <div class="separator my-6"></div>
+            <div class="table-responsive">
+              <table class="table align-middle table-row-bordered fs-7 gy-3">
+                <thead>
+                  <tr class="text-muted fw-bold text-uppercase gs-0">
+                    <th>#</th>
+                    <th>Timestamp</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Speed</th>
+                    <th>Accuracy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (ping of pings | slice:0:20; track ping.id) {
+                    <tr>
+                      <td>{{ $index + 1 }}</td>
+                      <td>{{ ping.recorded_at | date:'medium' }}</td>
+                      <td>{{ ping.latitude }}</td>
+                      <td>{{ ping.longitude }}</td>
+                      <td>{{ ping.speed ?? 'n/a' }}</td>
+                      <td>{{ ping.accuracy ?? 'n/a' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="w-xl-350px">
+      <div class="card">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title fw-bold text-gray-900">Incident Flags</h3>
+        </div>
+        <div class="card-body pt-2">
+          @if (!(trip.flags?.length)) {
+            <app-empty-state title="No flags recorded" description="Use the create flag action to log incidents during investigation."></app-empty-state>
+          } @else {
+            <div class="d-flex flex-column gap-5">
+              @for (flag of trip.flags ?? []; track flag.id) {
+                <div class="border border-gray-200 rounded p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="fw-bold">{{ flag.category || 'General Incident' }}</div>
+                    <app-flag-status-badge [status]="flag.status"></app-flag-status-badge>
+                  </div>
+                  <div class="text-gray-800 mb-2">{{ flag.reason }}</div>
+                  <div class="text-gray-600 fs-7 mb-3">{{ flag.notes || 'No notes attached.' }}</div>
+                  <button type="button" class="btn btn-sm btn-light-primary" (click)="updateFlag(flag)">Update</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,87 @@
+<!--begin::Exolore drawer-->
+<div
+  id="kt_help"
+  class="bg-body"
+  data-kt-drawer="true"
+  data-kt-drawer-name="help"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-overlay="true"
+  data-kt-drawer-width="{default:'350px', 'md': '525px'}"
+  data-kt-drawer-direction="end"
+  data-kt-drawer-toggle="#kt_help_toggle"
+  data-kt-drawer-close="#kt_help_close">
+
+  <!--begin::Card-->
+  <div class="card shadow-none rounded-0 w-100">
+    <!--begin::Header-->
+    <div class="card-header" id="kt_help_header">
+      <h5 class="card-title fw-bold text-gray-600">TrikTrack Resources</h5>
+
+      <div class="card-toolbar">
+        <button type="button" class="btn btn-sm btn-icon explore-btn-dismiss me-n5" id="kt_help_close">
+          <app-keenicon name="cross" class="fs-2"></app-keenicon>
+        </button>
+      </div>
+    </div>
+    <!--end::Header-->
+
+    <!--begin::Body-->
+    <div class="card-body" id="kt_help_body">
+      <!--begin::Content-->
+      <div
+        id="kt_help_scroll"
+        class="hover-scroll-overlay-y"
+        data-kt-scroll="true"
+        data-kt-scroll-height="auto"
+        data-kt-scroll-wrappers="#kt_help_body"
+        data-kt-scroll-dependencies="#kt_help_header"
+        data-kt-scroll-offset="5px">
+
+        <!--begin::Support-->
+        <div class="rounded border border-dashed border-gray-300 p-6 p-lg-8 mb-10">
+          <h2 class="fw-bolder mb-5">Operations Guidance</h2>
+          <div class="fs-5 fw-bold mb-5">
+            <span class="text-gray-500">Use the dashboard for overview, trips for investigations, drivers for status control, and citywall for superadmin registry tasks.</span>
+          </div>
+          <a routerLink="/dashboard" class="btn btn-lg explore-btn-primary w-100">Open Dashboard</a>
+        </div>
+        <div class="d-flex align-items-center mb-7">
+          <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-warning">
+            <app-keenicon name="abstract-26" class=" text-warning fs-2x fs-lg-3x"></app-keenicon>
+          </div>
+          <div class="d-flex flex-stack flex-grow-1 ms-4 ms-lg-6">
+            <div class="d-flex flex-column me-2 me-lg-5">
+              <a routerLink="/trips" class="text-gray-900 text-hover-primary fw-bolder fs-6 fs-lg-4 mb-1">Trip Investigations</a>
+              <div class="text-muted fw-bold fs-7 fs-lg-6">Inspect route history, open flags, and GPS ping timelines.</div>
+            </div>
+            <app-keenicon name="arrow-right" class=" text-gray400 fs-2"></app-keenicon>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-7">
+          <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-info">
+            <app-keenicon name="design-frame" class=" text-info fs-2x fs-lg-3x"></app-keenicon>
+          </div>
+          <div class="d-flex flex-stack flex-grow-1 ms-4 ms-lg-6">
+            <div class="d-flex flex-column me-2 me-lg-5">
+              <a routerLink="/drivers" class="text-gray-900 text-hover-primary fw-bolder fs-6 fs-lg-4 mb-1">Driver Management</a>
+              <div class="text-muted fw-bold fs-7 fs-lg-6">Review operator records, assigned units, and approval status.</div>
+            </div>
+            <app-keenicon name="arrow-right" class=" text-gray400 fs-2"></app-keenicon>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-7">
+          <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-danger">
+            <app-keenicon name="elc009.svg" class=" text-danger fs-2x fs-lg-3x"></app-keenicon>
+          </div>
+          <div class="d-flex flex-stack flex-grow-1 ms-4 ms-lg-6">
+            <div class="d-flex flex-column me-2 me-lg-5">
+              <a routerLink="/citywall" class="text-gray-900 text-hover-primary fw-bolder fs-6 fs-lg-4 mb-1">Citywall Controls</a>
+              <div class="text-muted fw-bold fs-7 fs-lg-6">Superadmins can register drivers, create units, and preview unit QR assets.</div>
+            </div>
+            <app-keenicon name="arrow-right" class=" text-gray400 fs-2"></app-keenicon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

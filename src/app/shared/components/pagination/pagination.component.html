@@ -1,0 +1,14 @@
+@if (meta && meta.total > meta.per_page) {
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-4 mt-6">
+    <div class="text-gray-600 fs-7">
+      Page {{ meta.current_page }} of {{ totalPages }}
+    </div>
+    <ngb-pagination
+      [collectionSize]="collectionSize"
+      [page]="meta.current_page"
+      [pageSize]="meta.per_page"
+      [boundaryLinks]="true"
+      (pageChange)="pageChange.emit($event)"
+    ></ngb-pagination>
+  </div>
+}

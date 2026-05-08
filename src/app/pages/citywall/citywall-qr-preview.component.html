@@ -1,0 +1,23 @@
+@if (isLoading) {
+  <app-loading-state label="Loading QR preview..."></app-loading-state>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else {
+  <div class="card">
+    <div class="card-header border-0 pt-6">
+      <h3 class="card-title">Unit QR Preview</h3>
+      <div class="card-toolbar">
+        <button class="btn btn-light-primary" type="button" (click)="reload()">Regenerate Preview</button>
+      </div>
+    </div>
+    <div class="card-body text-center py-10">
+      @if (qrCodeUrl) {
+        <img [src]="qrCodeUrl" alt="Unit QR Code" class="img-fluid mw-300px rounded border" />
+      } @else if (qrSvg) {
+        <div [innerHTML]="qrSvg"></div>
+      } @else {
+        <app-empty-state title="No QR asset returned" description="The backend did not include a preview image or SVG payload."></app-empty-state>
+      }
+    </div>
+  </div>
+}

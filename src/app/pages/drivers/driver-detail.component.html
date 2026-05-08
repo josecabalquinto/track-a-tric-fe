@@ -1,0 +1,105 @@
+@if (isLoading) {
+  <app-loading-state label="Loading driver profile..."></app-loading-state>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else if (driver) {
+  <div class="row g-5 g-xl-8">
+    <div class="col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="fs-2hx fw-bold text-gray-900 mb-2">{{ driver.name }}</div>
+          <div class="text-muted fs-6 mb-6">{{ driver.email || 'No email provided' }}</div>
+          <div class="badge badge-light-info text-uppercase mb-6">{{ driver.status }}</div>
+          <div class="d-flex flex-column gap-3">
+            <button class="btn btn-success" type="button" [disabled]="isUpdating" (click)="updateStatus('approved')">Approve Driver</button>
+            <button class="btn btn-warning" type="button" [disabled]="isUpdating" (click)="updateStatus('suspended')">Suspend Driver</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8">
+      <div class="card mb-8">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title">Driver Profile</h3>
+        </div>
+        <div class="card-body">
+          <div class="row g-5">
+            <div class="col-md-6">
+              <div class="text-muted fs-7">Phone</div>
+              <div class="fw-bold">{{ driver.phone || 'Unavailable' }}</div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-muted fs-7">License Number</div>
+              <div class="fw-bold">{{ driver.license_number || 'Unavailable' }}</div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-muted fs-7">Assigned Plate</div>
+              <div class="fw-bold">{{ driver.plate_number || 'Not assigned' }}</div>
+            </div>
+            <div class="col-md-6">
+              <div class="text-muted fs-7">Address</div>
+              <div class="fw-bold">{{ driver.address || 'Unavailable' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-8">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title">Assigned Units</h3>
+        </div>
+        <div class="card-body">
+          @if (!(driver.assigned_units?.length)) {
+            <app-empty-state title="No units assigned" description="Assign units from the backend workflow or citywall registry."></app-empty-state>
+          } @else {
+            <div class="d-flex flex-column gap-4">
+              @for (unit of driver.assigned_units ?? []; track unit.id) {
+                <div class="border rounded p-4">
+                  <div class="fw-bold">{{ unit.plate_number }}</div>
+                  <div class="text-muted fs-7">{{ unit.code }}</div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title">Trip History</h3>
+        </div>
+        <div class="card-body">
+          @if (!(driver.recent_trips?.length)) {
+            <app-empty-state title="No trip history" description="Completed rides for this driver will appear here."></app-empty-state>
+          } @else {
+            <div class="table-responsive">
+              <table class="table align-middle fs-6 gy-4">
+                <thead>
+                  <tr class="text-muted fw-bold text-uppercase">
+                    <th>Trip</th>
+                    <th>Status</th>
+                    <th>Started</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (trip of driver.recent_trips ?? []; track trip.id) {
+                    <tr>
+                      <td>#{{ trip.id }}</td>
+                      <td>{{ trip.status }}</td>
+                      <td>{{ trip.started_at | date:'medium' }}</td>
+                      <td class="text-end">
+                        <a class="btn btn-sm btn-light-primary" [routerLink]="['/trips', trip.id]">Open</a>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

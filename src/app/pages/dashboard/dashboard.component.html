@@ -1,0 +1,140 @@
+@if (isLoading) {
+  <app-loading-state label="Loading dashboard overview..."></app-loading-state>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else if (vm) {
+  <div class="row g-5 g-xl-8 mb-8">
+    <div class="col-md-6 col-xl-3">
+      <app-stat-card label="Active Trips" [value]="vm.activeTrips.toString()" hint="Trips currently in motion" badgeClass="badge-light-primary"></app-stat-card>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <app-stat-card label="Completed Today" [value]="vm.completedToday.toString()" hint="Recently closed rides" badgeClass="badge-light-success"></app-stat-card>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <app-stat-card label="Open Flags" [value]="vm.openFlags.toString()" hint="Trips needing officer review" badgeClass="badge-light-warning"></app-stat-card>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <app-stat-card label="Driver Registry" [value]="vm.totalDrivers.toString()" hint="Tracked driver accounts" badgeClass="badge-light-info"></app-stat-card>
+    </div>
+  </div>
+
+  <div class="row g-5 g-xl-8 mb-8">
+    <div class="col-xl-8">
+      <div class="card h-100">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title fw-bold text-gray-900">Recent Trip Activity</h3>
+        </div>
+        <div class="card-body pt-0">
+          @if (!vm.recentTrips.length) {
+            <app-empty-state title="No recent trips" description="Trips will appear here after QR scan sessions begin."></app-empty-state>
+          } @else {
+            <div class="table-responsive">
+              <table class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                  <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th>Trip</th>
+                    <th>Driver</th>
+                    <th>Status</th>
+                    <th>Started</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700 fw-semibold">
+                  @for (trip of vm.recentTrips; track trip.id) {
+                    <tr>
+                      <td>
+                        <div class="fw-bold">#{{ trip.id }}</div>
+                        <div class="text-muted fs-7">{{ trip.unit?.plate_number || 'No unit assigned' }}</div>
+                      </td>
+                      <td>{{ trip.driver?.name || 'Unassigned' }}</td>
+                      <td><span class="badge badge-light-primary text-uppercase">{{ trip.status }}</span></td>
+                      <td>{{ trip.started_at | date:'medium' }}</td>
+                      <td class="text-end">
+                        <a class="btn btn-sm btn-light-primary" [routerLink]="['/trips', trip.id]">Investigate</a>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4">
+      <div class="card h-100">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title fw-bold text-gray-900">Operational Summary</h3>
+        </div>
+        <div class="card-body pt-2">
+          <div class="d-flex flex-column gap-5">
+            <div class="d-flex justify-content-between">
+              <span class="text-gray-600">Approved Drivers</span>
+              <span class="fw-bold">{{ vm.approvedDrivers }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-gray-600">Pending Drivers</span>
+              <span class="fw-bold">{{ vm.pendingDrivers }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-gray-600">Suspended Drivers</span>
+              <span class="fw-bold">{{ vm.suspendedDrivers }}</span>
+            </div>
+            <div class="separator"></div>
+            <div class="d-flex justify-content-between">
+              <span class="text-gray-600">Resolved Flags</span>
+              <span class="fw-bold">{{ vm.resolvedFlags }}</span>
+            </div>
+            <div class="separator"></div>
+            <div class="d-flex flex-column gap-3">
+              @for (link of quickLinks; track link.route) {
+                <a class="btn" [ngClass]="link.tone" [routerLink]="link.route">{{ link.label }}</a>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-5 g-xl-8">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header border-0 pt-6">
+          <h3 class="card-title fw-bold text-gray-900">Recently Added Drivers</h3>
+        </div>
+        <div class="card-body pt-0">
+          @if (!vm.recentDrivers.length) {
+            <app-empty-state title="No drivers found" description="Create driver records from the Citywall module."></app-empty-state>
+          } @else {
+            <div class="table-responsive">
+              <table class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                  <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Contact</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700 fw-semibold">
+                  @for (driver of vm.recentDrivers; track driver.id) {
+                    <tr>
+                      <td>{{ driver.name }}</td>
+                      <td><span class="badge badge-light-info text-uppercase">{{ driver.status }}</span></td>
+                      <td>{{ driver.phone || driver.email || 'Not provided' }}</td>
+                      <td class="text-end">
+                        <a class="btn btn-sm btn-light-primary" [routerLink]="['/drivers', driver.id]">View</a>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

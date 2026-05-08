@@ -1,0 +1,81 @@
+<div class="card mb-8">
+  <div class="card-header border-0 pt-6">
+    <h3 class="card-title">Trip Investigation Queue</h3>
+  </div>
+  <div class="card-body">
+    <form class="row g-5" [formGroup]="filtersForm">
+      <div class="col-md-3">
+        <label class="form-label">Plate</label>
+        <input class="form-control" formControlName="plate" placeholder="Search by plate number" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select class="form-select" formControlName="status">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="flagged">Flagged</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Date From</label>
+        <input class="form-control" type="date" formControlName="date_from" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Date To</label>
+        <input class="form-control" type="date" formControlName="date_to" />
+      </div>
+      <div class="col-12 d-flex gap-3">
+        <button type="button" class="btn btn-primary" (click)="applyFilters()">Apply Filters</button>
+        <button type="button" class="btn btn-light" (click)="resetFilters()">Reset</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+@if (isLoading) {
+  <app-loading-state label="Loading trips..."></app-loading-state>
+} @else if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else if (!trips.length) {
+  <app-empty-state title="No trips matched the filters" description="Try widening the date range or clearing the plate filter."></app-empty-state>
+} @else {
+  <div class="card">
+    <div class="card-body pt-0">
+      <div class="table-responsive">
+        <table class="table align-middle table-row-dashed fs-6 gy-5">
+          <thead>
+            <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+              <th>Trip</th>
+              <th>Driver</th>
+              <th>Unit</th>
+              <th>Status</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Flags</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-700 fw-semibold">
+            @for (trip of trips; track trip.id) {
+              <tr>
+                <td>#{{ trip.id }}</td>
+                <td>{{ trip.driver?.name || 'Unassigned' }}</td>
+                <td>{{ trip.unit?.plate_number || trip.unit?.code || 'No unit' }}</td>
+                <td><span class="badge badge-light-primary text-uppercase">{{ trip.status }}</span></td>
+                <td>{{ trip.started_at | date:'medium' }}</td>
+                <td>{{ trip.ended_at ? (trip.ended_at | date:'medium') : 'In progress' }}</td>
+                <td>{{ trip.flags?.length || 0 }}</td>
+                <td class="text-end">
+                  <a class="btn btn-sm btn-light-primary" [routerLink]="['/trips', trip.id]">Details</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <app-pagination [meta]="meta" (pageChange)="loadTrips($event)"></app-pagination>
+    </div>
+  </div>
+}

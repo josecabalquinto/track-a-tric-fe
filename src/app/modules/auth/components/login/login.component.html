@@ -1,0 +1,98 @@
+<form class="form w-100 login-form" [formGroup]="loginForm" novalidate="novalidate" id="kt_login_signin_form"
+  (ngSubmit)="submit()">
+  <div class="mb-11">
+    <h1 class="login-title mb-5">TrikTrack Admin Portal</h1>
+    <div class="login-subtitle">
+      Officer and superadmin access for investigations,
+      driver oversight, and QR management.
+    </div>
+  </div>
+
+  <div class="login-auth-line my-14">
+    <span class="login-auth-line-segment"></span>
+    <span class="login-auth-line-label">
+      <i class="bi bi-lock"></i>
+      Secure sign-in
+      <span class="login-auth-line-subtext">Protected by Laravel Sanctum</span>
+    </span>
+    <span class="login-auth-line-segment"></span>
+  </div>
+
+  @if (hasError) {
+    <div class="mb-8 alert alert-danger py-4">
+      <div class="alert-text fw-semibold">{{ errorMessage }}</div>
+    </div>
+  }
+
+  <div class="fv-row mb-8">
+    <label class="form-label login-label">Admin Email</label>
+    <div class="login-input-shell" [ngClass]="{ 'is-invalid': loginForm.controls['email'].invalid && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched) }">
+      <span class="login-input-icon"><i class="bi bi-envelope"></i></span>
+      <input class="form-control login-input" type="email" name="email" formControlName="email" autocomplete="off" />
+    </div>
+    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+        validation: 'required',
+        message: 'Email is required',
+        control: loginForm.controls['email']
+      }"></ng-container>
+    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+        validation: 'email',
+        message: 'Email is invalid',
+        control: loginForm.controls['email']
+      }"></ng-container>
+  </div>
+
+  <div class="fv-row mb-3">
+    <label class="form-label login-label mb-0">Password</label>
+    <div class="login-input-shell" [ngClass]="{ 'is-invalid': loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched) }">
+      <span class="login-input-icon"><i class="bi bi-lock"></i></span>
+      <input class="form-control login-input" [type]="showPassword ? 'text' : 'password'" name="password" autocomplete="off"
+        formControlName="password" />
+      <button type="button" class="login-password-toggle" (click)="togglePasswordVisibility()" aria-label="Toggle password visibility">
+        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+      </button>
+    </div>
+    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+        validation: 'required',
+        message: 'Password is required',
+        control: loginForm.controls['password']
+      }"></ng-container>
+    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+        validation: 'minlength',
+        message: 'Password should have at least 3 symbols',
+        control: loginForm.controls['password']
+      }"></ng-container>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-4 mb-10 mt-8">
+    <label class="form-check form-check-custom form-check-solid align-items-center m-0">
+      <input class="form-check-input me-3" type="checkbox" formControlName="rememberMe" />
+      <span class="login-meta-text">Remember me</span>
+    </label>
+    <a href="javascript:void(0)" class="login-forgot-link">Forgot password?</a>
+  </div>
+
+  <div class="d-grid mb-10">
+    <button type="submit" id="kt_sign_in_submit" class="btn login-submit-btn" [disabled]="loginForm.invalid">
+      @if (isLoading$ | async) {
+        <span class="indicator-progress" [style.display]="'block'">
+          Please wait...
+          <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+        </span>
+      }
+      @if ((isLoading$ | async) === false) {
+        <span class="indicator-label">Sign in</span>
+      }
+    </button>
+  </div>
+</form>
+
+<ng-template #formError let-control="control" let-message="message" let-validation="validation">
+  @if (control.hasError(validation) && (control.dirty || control.touched)) {
+    <div class="fv-plugins-message-container">
+      <span role="alert">
+        {{ message }}
+      </span>
+    </div>
+  }
+</ng-template>

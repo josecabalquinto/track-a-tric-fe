@@ -1,0 +1,29 @@
+<div class="row g-5 g-xl-8">
+  <div class="col-md-6 col-xl-3">
+    <app-stat-card label="Registry" value="Citywall" hint="Superadmin-only controls" badgeClass="badge-light-warning"></app-stat-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-stat-card label="Drivers" value="Create" hint="Register new operators" badgeClass="badge-light-success"></app-stat-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-stat-card label="Units" value="Create" hint="Provision tricycle QR records" badgeClass="badge-light-primary"></app-stat-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-stat-card label="QR" value="Preview" hint="Generate printable unit codes" badgeClass="badge-light-info"></app-stat-card>
+  </div>
+</div>
+
+<div class="card mt-8">
+  <div class="card-body py-12">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-6">
+      <div>
+        <h2 class="text-gray-900 fw-bold mb-2">Citywall Administration</h2>
+        <div class="text-gray-600 fs-6">Use the routes below to register drivers, update records, create units, and preview QR assets.</div>
+      </div>
+      <div class="d-flex gap-3 flex-wrap">
+        <a class="btn btn-primary" routerLink="/citywall/drivers/new">Register Driver</a>
+        <a class="btn btn-light-primary" routerLink="/citywall/units/new">Create Unit</a>
+      </div>
+    </div>
+  </div>
+</div>
